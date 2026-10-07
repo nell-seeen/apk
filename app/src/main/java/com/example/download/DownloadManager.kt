@@ -8,6 +8,7 @@ import com.example.data.model.DownloadItem
 import com.example.data.model.DownloadStatus
 import com.example.data.model.Song
 import com.example.data.network.InnerTubeClient
+import com.example.innertube.extractor.StreamExtractor
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +24,8 @@ import java.util.concurrent.TimeUnit
 class DownloadManager(
     private val context: Context,
     private val innerTubeClient: InnerTubeClient,
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val streamExtractor: StreamExtractor = innerTubeClient.streamExtractor
 ) {
     companion object {
         private const val TAG = "DownloadManager"
@@ -107,11 +109,16 @@ class DownloadManager(
         try {
             updateTask(song.id, DownloadItem(song = song, status = DownloadStatus.DOWNLOADING, progress = 0.05f))
 
-            // 1. Resolve audio stream URL
-            val streamUrl = innerTubeClient.getStreamUrl(song.id)
-            if (streamUrl.isNullOrEmpty()) {
-                throw IllegalStateException("Unable to resolve audio stream for download")
+            // 1. Resolve audio stream URL via StreamExtractor
+            val streamResult = streamExtractor.getAudioStream(song.id)
+            if (streamResult.isFailure) {
+                throw IllegalStateException("Stream extraction failed: ${streamResult.exceptionOrNull()?.message}")
             }
+            val audioStream = streamResult.getOrThrow()
+            if (!audioStream.isValid()) {
+                throw IllegalStateException("Extracted stream is invalid or expired")
+            }
+            val streamUrl = audioStream.url
 
             // 2. Fetch and write to temp file
             val request = Request.Builder().url(streamUrl).build()

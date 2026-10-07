@@ -18,6 +18,9 @@ class MetroTuneApp : Application() {
     lateinit var innerTubeClient: InnerTubeClient
         private set
 
+    val streamExtractor get() = innerTubeClient.streamExtractor
+    val innerTubeMusic get() = innerTubeClient.innerTubeMusic
+
     lateinit var lyricsClient: LyricsClient
         private set
 
@@ -32,8 +35,8 @@ class MetroTuneApp : Application() {
         database = AppDatabase.getInstance(this)
         innerTubeClient = InnerTubeClient()
         lyricsClient = LyricsClient()
-        downloadManager = DownloadManager(this, innerTubeClient, database)
-        playerManager = MusicPlayerManager.getInstance(this, innerTubeClient, downloadManager, database)
+        downloadManager = DownloadManager(this, innerTubeClient, database, innerTubeClient.streamExtractor)
+        playerManager = MusicPlayerManager.getInstance(this, innerTubeClient, downloadManager, database, innerTubeClient.streamExtractor)
 
         // Start playback service to attach MediaSession
         try {
