@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -160,7 +161,7 @@ fun SongItem(
             ) {
                 DropdownMenuItem(
                     text = { Text("Play Next") },
-                    leadingIcon = { Icon(Icons.Default.QueueMusic, contentDescription = null) },
+                    leadingIcon = { Icon(Icons.AutoMirrored.Filled.QueueMusic, contentDescription = null) },
                     onClick = {
                         showMenu = false
                         onPlayNext()
@@ -168,7 +169,7 @@ fun SongItem(
                 )
                 DropdownMenuItem(
                     text = { Text("Add to Queue") },
-                    leadingIcon = { Icon(Icons.Default.PlaylistAdd, contentDescription = null) },
+                    leadingIcon = { Icon(Icons.AutoMirrored.Filled.PlaylistAdd, contentDescription = null) },
                     onClick = {
                         showMenu = false
                         onAddToQueue()

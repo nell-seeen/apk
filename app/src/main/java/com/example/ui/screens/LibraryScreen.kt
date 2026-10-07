@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -157,7 +158,7 @@ fun LibraryScreen(
             LibraryTab.PLAYLISTS -> {
                 if (localPlaylists.isEmpty()) {
                     EmptyLibraryPlaceholder(
-                        icon = Icons.Default.PlaylistPlay,
+                        icon = Icons.AutoMirrored.Filled.PlaylistPlay,
                         title = "No playlists created",
                         subtitle = "Create a custom playlist to organize your songs"
                     )
@@ -189,7 +190,7 @@ fun LibraryScreen(
                                         modifier = Modifier.size(48.dp)
                                     ) {
                                         Icon(
-                                            imageVector = Icons.Default.PlaylistPlay,
+                                            imageVector = Icons.AutoMirrored.Filled.PlaylistPlay,
                                             contentDescription = null,
                                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                             modifier = Modifier.padding(12.dp)
